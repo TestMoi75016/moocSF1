@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bonjour!
+{% endblock %}
+{# 'title' à ne pas confondre avec le 'h1'#}
+
+{% block stylesheets %}
+	{{ parent()}}
+	{# charge le block css qu'il y a dans le fichier parent sans l'écraser #}
+	{{ encore_entry_link_tags('test') }}
+{% endblock %}
+
+
+{% block body %}
+	<p>Bonjour je suis un paragraphe</p>
+	{% include 'jeu/sous-menu.html.twig'%}
+	{# inclure un fichier qui viendra se substituer à cette ligne de code#}
+{% endblock %}
