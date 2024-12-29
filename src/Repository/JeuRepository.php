@@ -22,20 +22,18 @@ class JeuRepository extends ServiceEntityRepository
         parent::__construct($registry, Jeu::class);
     }
 
-    //    /**
-    //     * @return Jeu[] Returns an array of Jeu objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('j')
-    //            ->andWhere('j.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('j.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /** Fonction CUSTOM où écrire du dql (doctrine SQL) pr AFFICHER un nombre LIMITER de jeu
+     * @return Jeu[] Returns an array of Jeu objects
+     */
+    public function findJeuxPourAfficherEnNombreLimited(int $jeuxMax): array // APPEL de cette méthode dans JeuController
+    {  // Doctrine génère automatiquement le "SELECT *"
+        return $this->createQueryBuilder('j') // ici ça équivaut à "FROM jeu j". Spécifie que vous travaillez sur la table jeu et lui donne l'alias j.
+            ->orderBy('j.id', 'ASC') // "ORDER BY j.id ASC" : Trie les résultats par la colonne id dans l'ordre croissant
+            ->setMaxResults($jeuxMax) //"LIMIT :jeuxMax" Limite le nombre de résultats retournés par la requête à la valeur de :jeuxMax
+            ->getQuery()
+            ->getResult() // getQuery() et getResult() sont essentiels pour obtenir le resultat de la requête.
+        ;
+    }
 
     //    public function findOneBySomeField($value): ?Jeu
     //    {

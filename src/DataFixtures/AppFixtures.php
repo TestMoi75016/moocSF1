@@ -3,14 +3,27 @@
 namespace App\DataFixtures;
 
 use App\Entity\Jeu;
+use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker; // RAJOUT A LA MAIN pour utilisé Faker que je possède dans mon dossier vender en tant que dépendance
+use Faker; // RAJOUT A LA MAIN pour utiliser Faker que je possède dans mon dossier vender en tant que dépendance 
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-    public function load(ObjectManager $manager): void
+    private UserPasswordHasherInterface $userPasswordHasher; // Déclaration explicite de la propriété $userPasswordHasher de type "UserPasswordHasherInterface"
+
+
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher)
+    {
+        $this->userPasswordHasher = $userPasswordHasher;
+    }
+
+
+
+
+    public function load(ObjectManager $manager): void // grâce ) ObjectManager on inject un fake utilisateur dans la BDD
     {
 
         $faker = Faker\Factory::create();
@@ -24,6 +37,16 @@ class AppFixtures extends Fixture
             $jeu->setDescription($faker->text(50));
             $manager->persist($jeu); // Ensuite je persiste mon entité (attention persist() n'écrit rien dans la DB)
         }
+
+        $user = new User(); // Nouvelle instance de l'entité User
+        $user->setEmail("user@gmail.com");
+        $user->setNom($faker->name);
+        $user->setPrenom($faker->firstname);
+        $user->setPassword($this->userPasswordHasher->hashPassword($user, "123"));
+        $user->setRoles(["ROLE_USER"]);
+        $manager->persist($user); // Ensuite je persiste mon entité (attention persist() n'écrit rien dans la DB)
+
+
         $manager->flush(); // prend toutes les Entités qui ont subit le persist() (ici "$jeu") et les SAUVEGARDE dans la DB (si elles n'existent pas déjà encore dans la DB)
         //Si les Entité existent deja dans la DB : flush() va faire un update
     }

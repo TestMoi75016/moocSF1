@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscrivez-vous sur LocaJeu
+{% endblock %}
+
+{% block body %}
+	<div
+		class="container w-25 m-auto mt-5">
+		{# method form_start ("ici: variable 'form' qui contient notre formulaire") #}
+		{{ form_start(form) }}
+		{{ form_row(form.email) }}
+		{{ form_row(form.prenom) }}
+		{{ form_row(form.nom) }}
+		{{ form_row(form.password) }}
+
+		<button type="submit" class="btn btn-success">S'inscrire</button>
+		{{ form_end(form) }}
+		{# ainsi j'inclu mon bouton "submit" ds mon formulaire qui n'en contenait pas de base , ce qui rend intéractif ce bouton d'aurénavant#}
+	</div>
+{% endblock %}
