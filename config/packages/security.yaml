@@ -20,6 +20,8 @@ security:
                 login_path: app_login # Définit l'URL pour afficher le formulaire de connexion.
                 check_path: app_login # Définit l'URL où les données du formulaire sont envoyées pour vérification (par exemple, vérification de l'email et du mot de passe).
                     # ma route "app_login" doit être définie dans un contrôleur
+            access_denied_handler: App\Security\AccessDeniedHandler
+
             logout:
                path: app_logout
 
@@ -33,7 +35,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/profil, roles: ROLE_USER }  #Les roles qui ont accès à profil ce sont les roles ROLE_USER
+         - { path: ^/profil, roles: ROLE_USER }  #Les roles qui ont accès à la route " /profil "ce sont les roles ROLE_USER
+         - { path: ^/admin, roles: ROLE_ADMIN }  #Les roles qui ont accès à la route " /admin "ce sont les roles ROLE_ADMIN
 
 when@test:
     security:

@@ -14,5 +14,8 @@
 		{% else %}
 			<p>Vous n'êtes pas connecté.</p>
 		{% endif %}
-	{% endblock %}
+
+			<a href="{{  path('app_profil_changepassword') }}" class="btn btn-primary"> Modifier le mot de passe <i class="fa-solid fa-lock"></i> </a>
+		</div>
+{% endblock %}
 	{#Si l'user n'est pas connecté -> app.user sera "null" , et donc app.user.prenom/email/nom n'existent pas#}

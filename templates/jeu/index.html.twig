@@ -24,7 +24,7 @@
 						<h5 class="card-title">{{jeu.nom}}</h5>
 						<!-- jeu.nom fait appel à $jeux->getNom() en réalité pour obtenir le nom du jeu-->
 						<p class="card-text">{{jeu.description}}</p>
-						<a href="#" class="btn btn-primary btn-sm">Voir le jeu</a>
+						<a href="{{ path('app_jeu_voir', {'id': jeu.id}) }}" class="btn btn-primary btn-sm">Voir le jeu</a>
 						<!--btn-sm est une class bootstrap pour rendre le bouton plus petit-->
 					</div>
 				</div>

@@ -20,11 +20,15 @@ class Jeu
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateSortie = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $genre = null;
+    /*#[ORM\Column(length: 50)]
+    private ?string $genre = null;*/
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\ManyToOne(inversedBy: 'jeux')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Genre $genre = null; //nouveau champ Genre $genre (relation + l'infini - 1)
 
     public function getId(): ?int
     {
@@ -55,7 +59,7 @@ class Jeu
         return $this;
     }
 
-    public function getGenre(): ?string
+    /*public function getGenre(): ?string
     {
         return $this->genre;
     }
@@ -65,7 +69,7 @@ class Jeu
         $this->genre = $genre;
 
         return $this;
-    }
+    } */
 
     public function getDescription(): ?string
     {
@@ -75,6 +79,18 @@ class Jeu
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getGenre(): ?Genre
+    { // permet de nous 'retourner' le genre du jeu
+        return $this->genre;
+    }
+
+    public function setGenre(?Genre $genre): static
+    { // permet "d'écrire" le nouveau genre au jeu
+        $this->genre = $genre;
 
         return $this;
     }

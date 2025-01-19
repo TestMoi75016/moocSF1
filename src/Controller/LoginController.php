@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,7 @@ class LoginController extends AbstractController
     }
     //ROUTE: /register et son nom est app_register :
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response  //EntityManagerInterface est le ObjectManager version Symfony : il permet d'injecter un user dans la DB
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, MailService $mailService): Response  //EntityManagerInterface est le ObjectManager version Symfony : il permet d'injecter un user dans la DB
     {
         $user = new User();
         $user->setRoles(['ROLE_USER']);
@@ -43,6 +44,8 @@ class LoginController extends AbstractController
             $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword() /*"1234*/)); //hashage du mdp
             $entityManager->persist($user); // Ensuite je persiste mon entité (attention persist() n'écrit rien dans la DB)
             $entityManager->flush();
+
+$mailService->sendMail('mike@hotmail.com', 'Bienvenue ! ', 'Ce mail vous est envoyé pour vous confirmer votre inscription');
 
             $this->addFlash(
                 'success',

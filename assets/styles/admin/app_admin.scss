@@ -1,0 +1,16 @@
+@import "~bootstrap/scss/bootstrap"; // import qui rend bootstrap dispo sur l'intégralité du style
+
+.sidebar {
+  background-color: #c1c1c1;
+  height: 100vh;
+
+  &__onglet {
+    padding: 10px 0;
+    border-bottom: 1px dashed white;
+    font-size: 19px;
+  }
+    & a{
+      text-decoration: none;
+      color: black;
+    }
+}

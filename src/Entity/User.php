@@ -6,9 +6,17 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Rollerworks\Component\PasswordStrength\Validator\Constraints as RollerworksPassword;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(
+    fields: ['email'],
+    message: "Cet email est déjà utilise")] // eviter qu'un email deja dans la DB ne puisse être encore inscrit
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -29,12 +37,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[RollerworksPassword\PasswordRequirements( // CECI EST UN 'ATTRIBUT'
+        requireLetters: true,
+        missingLettersMessage: "Votre mot de passe doit contenir au moins 1 lettre.",
+        minLength: 8,
+        tooShortMessage: "Votre mot de passe doit contenir au moins 8 caractères."
+    )]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 40)]
+    #[Assert\Length(
+        min: 3,
+        max: 15,
+        minMessage: 'Votre prénom doit contenir au moins {{ limit }} caractères ',
+        maxMessage: 'Votre nom ne doit pas contenir plus de {{ limit }} caractères ',
+    )]
     private ?string $prenom = null;
 
     public function getId(): ?int
