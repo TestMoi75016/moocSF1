@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bonjour!
+{% endblock %}
+{# 'title' à ne pas confondre avec le 'h1'#}
+
+{% block body %}
+	<div
+		class="container mt-5">
+		<!--bootstrap (mt-5 = margin-top-->
+		<h1 class="text-center ">Bienvenue sur Loca Jeu</h1>
+		<p class="text-center">
+			Louez vos jeux de société , de particulier à particulier
+		</p>
+
+		<div
+			class="d-flex justify-content-between flex-wrap mt-4">
+			<!-- "d-flex" = Le DISPLAY FLEX en BOOTSTRAP-->
+
+			{% for jeu in jeux %}
+
+				<div class="card mt-3" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">{{jeu.nom}}</h5>
+						<!-- jeu.nom fait appel à $jeux->getNom() en réalité pour obtenir le nom du jeu-->
+						<p class="card-text">{{jeu.description}}</p>
+						<a href="{{ path('app_jeu_voir', {'id': jeu.id}) }}" class="btn btn-primary btn-sm">Voir le jeu</a>
+						<!--btn-sm est une class bootstrap pour rendre le bouton plus petit-->
+					</div>
+				</div>
+			{% endfor %}
+
+
+		</div>
+
+	</div>
+{% endblock %}
